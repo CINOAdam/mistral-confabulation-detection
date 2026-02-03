@@ -12,6 +12,14 @@ class Settings(BaseSettings):
         default="mistralai/Mistral-Small-Instruct-2409",
         description="HuggingFace model identifier"
     )
+    mistral_model: str = Field(
+        default="mistralai/Mistral-Small-3.2-24B-Instruct-2506",
+        description="Mistral model for reproducibility experiments"
+    )
+    model_cache_dir: str = Field(
+        default=None,  # Will use HuggingFace default: ~/.cache/huggingface
+        description="Directory for caching model weights (uses HF default if not set)"
+    )
     model_dtype: Literal["float16", "bfloat16", "float32"] = Field(
         default="bfloat16",
         description="Model precision"
@@ -29,6 +37,10 @@ class Settings(BaseSettings):
     sae_id: str = Field(
         default="blocks.4.hook_resid_post",
         description="SAE hook point"
+    )
+    sae_path: str = Field(
+        default="Codcordance/Mistral-Small-3.2-24B-Instruct-2506-SAE",
+        description="SAE model identifier (HuggingFace)"
     )
 
     # Capture configuration

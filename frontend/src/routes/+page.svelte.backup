@@ -1,0 +1,168 @@
+<script lang="ts">
+	import { onMount } from 'svelte';
+	import MistralChat from '$lib/components/MistralChat.svelte';
+	import ActivationPanel from '$lib/components/ActivationPanel.svelte';
+	import ScenarioSelector from '$lib/components/ScenarioSelector.svelte';
+	import type { MessageWithActivations, ActivationData } from '$lib/types';
+	import { healthCheck } from '$lib/api';
+
+	let messages: MessageWithActivations[] = [];
+	let currentActivations: ActivationData | null = null;
+	let isLoading = false;
+	let backendConnected = false;
+	let checkingBackend = true;
+
+	// Handle new message with activations
+	function handleNewMessage(message: MessageWithActivations) {
+		if (message.activations) {
+			currentActivations = message.activations;
+		}
+	}
+
+	// Handle scenario selection
+	function handleScenarioLoad(scenario: any) {
+		// Add scenario prompt as user message
+		const userMessage: MessageWithActivations = {
+			message: {
+				role: 'user',
+				content: scenario.prompt,
+				timestamp: new Date().toISOString()
+			}
+		};
+		messages = [...messages, userMessage];
+	}
+
+	// Check backend connectivity on mount
+	onMount(async () => {
+		try {
+			backendConnected = await healthCheck();
+		} catch (err) {
+			console.error('Backend health check failed:', err);
+			backendConnected = false;
+		} finally {
+			checkingBackend = false;
+		}
+	});
+</script>
+
+<svelte:head>
+	<title>Mistral Reproducibility - Strategic Deception Research</title>
+	<meta
+		name="description"
+		content="Real-time neural activation monitoring for Mistral-22B strategic deception patterns"
+	/>
+</svelte:head>
+
+<div class="app-container min-h-screen flex flex-col">
+	<!-- Header -->
+	<header class="bg-gradient-to-r from-blue-900 to-blue-800 text-white shadow-lg">
+		<div class="px-6 py-4">
+			<h1 class="text-2xl font-bold">Mistral Reproducibility</h1>
+			<p class="text-sm opacity-90 mt-1">Strategic Deception Research - Real-time Activation Monitoring</p>
+
+			<!-- Backend status indicator -->
+			<div class="mt-2 flex items-center space-x-2 text-xs">
+				{#if checkingBackend}
+					<div class="w-2 h-2 bg-yellow-400 rounded-full animate-pulse"></div>
+					<span class="opacity-75">Checking backend...</span>
+				{:else if backendConnected}
+					<div class="w-2 h-2 bg-green-400 rounded-full"></div>
+					<span class="opacity-75">Backend connected</span>
+				{:else}
+					<div class="w-2 h-2 bg-red-400 rounded-full"></div>
+					<span class="opacity-75">Backend disconnected - check if service is running</span>
+				{/if}
+			</div>
+		</div>
+	</header>
+
+	<!-- Main content area -->
+	{#if !backendConnected && !checkingBackend}
+		<div class="flex-1 flex items-center justify-center bg-gray-50">
+			<div class="text-center max-w-md px-4">
+				<svg
+					class="w-20 h-20 mx-auto mb-4 text-red-400"
+					fill="none"
+					stroke="currentColor"
+					viewBox="0 0 24 24"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+					/>
+				</svg>
+				<h2 class="text-xl font-bold text-gray-800 mb-2">Backend Connection Failed</h2>
+				<p class="text-sm text-gray-600 mb-4">
+					Cannot connect to the Mistral backend service. Please ensure the backend is running:
+				</p>
+				<div class="bg-gray-800 text-green-400 text-xs font-mono p-4 rounded text-left">
+					<p>cd /home/adam/Research/mistral-reproducibility</p>
+					<p>docker-compose up</p>
+				</div>
+				<button
+					class="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+					on:click={() => window.location.reload()}
+				>
+					Retry Connection
+				</button>
+			</div>
+		</div>
+	{:else}
+		<div class="flex-1 flex flex-col overflow-auto">
+			<!-- Scenario Selector -->
+			<div class="border-b border-gray-200 bg-white">
+				<ScenarioSelector onScenarioLoad={handleScenarioLoad} />
+			</div>
+
+			<!-- Main content area -->
+			<div class="flex-1 flex overflow-auto">
+				<!-- Left side: Chat interface (60%) -->
+				<div class="w-[60%] border-r border-gray-200">
+					<MistralChat
+						bind:messages
+						bind:isLoading
+						onNewMessage={handleNewMessage}
+					/>
+				</div>
+
+				<!-- Right side: Activation panel (40%) -->
+				<div class="w-[40%]">
+					<ActivationPanel activations={currentActivations} />
+				</div>
+			</div>
+		</div>
+	{/if}
+
+	<!-- Footer -->
+	<footer class="bg-gray-100 border-t border-gray-200 px-6 py-3 text-xs text-gray-600">
+		<div class="flex justify-between items-center">
+			<div>
+				<strong>Research Context:</strong> SipIt Bimodal L3/L4 Distance Discovery (Preserved vs Transformed Processing)
+			</div>
+			<div class="text-right">
+				<a
+					href="https://github.com/your-repo/mistral-reproducibility"
+					target="_blank"
+					rel="noopener noreferrer"
+					class="text-blue-600 hover:text-blue-800 underline"
+				>
+					View Documentation
+				</a>
+			</div>
+		</div>
+	</footer>
+</div>
+
+<style>
+	.app-container {
+		font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+	}
+
+	:global(body) {
+		margin: 0;
+		padding: 0;
+		overflow: auto;
+	}
+</style>

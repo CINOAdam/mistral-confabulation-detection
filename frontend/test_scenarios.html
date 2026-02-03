@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scenario Loader Test</title>
+    <style>
+        body { font-family: system-ui; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .scenario { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 4px; }
+        .scenario.honest { border-left: 4px solid #10b981; }
+        .scenario.deceptive { border-left: 4px solid #ef4444; }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 12px; margin: 0 4px; }
+        .badge.honest { background: #10b981; color: white; }
+        .badge.deceptive { background: #ef4444; color: white; }
+        .prompt { background: #f3f4f6; padding: 10px; border-radius: 4px; font-family: monospace; margin: 10px 0; }
+        h1 { color: #1e40af; }
+        button { background: #1e40af; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #1e3a8a; }
+        #error { color: #ef4444; background: #fee; padding: 10px; border-radius: 4px; display: none; }
+    </style>
+</head>
+<body>
+    <h1>Scenario Loader Test</h1>
+    <p>Testing the scenario loading functionality</p>
+    
+    <button onclick="loadAllScenarios()">Load All Scenarios</button>
+    
+    <div id="error"></div>
+    <div id="scenarios"></div>
+
+    <script>
+        async function loadAllScenarios() {
+            const errorDiv = document.getElementById('error');
+            const scenariosDiv = document.getElementById('scenarios');
+            
+            try {
+                // Load index
+                const indexResponse = await fetch('/scenarios/index.json');
+                if (!indexResponse.ok) throw new Error('Failed to load index');
+                const index = await indexResponse.json();
+                
+                scenariosDiv.innerHTML = `<h2>Loaded ${index.total_scenarios} scenarios</h2>`;
+                
+                // Load each scenario
+                for (const entry of index.scenarios) {
+                    try {
+                        const response = await fetch(entry.path);
+                        if (!response.ok) throw new Error(`Failed to load ${entry.id}`);
+                        const scenario = await response.json();
+                        
+                        const div = document.createElement('div');
+                        div.className = `scenario ${scenario.expected_regime.toLowerCase()}`;
+                        div.innerHTML = `
+                            <h3>${scenario.title}</h3>
+                            <div>
+                                <span class="badge ${scenario.expected_regime.toLowerCase()}">${scenario.expected_regime}</span>
+                                <span class="badge" style="background: #6366f1; color: white;">${scenario.metadata.difficulty}</span>
+                                <span class="badge" style="background: #8b5cf6; color: white;">${scenario.discovery}</span>
+                            </div>
+                            <p>${scenario.description}</p>
+                            <div class="prompt"><strong>Prompt:</strong> ${scenario.prompt}</div>
+                            <p><strong>Expected Distance:</strong> ${scenario.expected_distance_range[0]} - ${scenario.expected_distance_range[1]}</p>
+                            <p><em>${scenario.context}</em></p>
+                        `;
+                        scenariosDiv.appendChild(div);
+                    } catch (e) {
+                        console.error(`Error loading ${entry.id}:`, e);
+                    }
+                }
+                
+                errorDiv.style.display = 'none';
+            } catch (e) {
+                errorDiv.textContent = `Error: ${e.message}`;
+                errorDiv.style.display = 'block';
+                console.error(e);
+            }
+        }
+    </script>
+</body>
+</html>

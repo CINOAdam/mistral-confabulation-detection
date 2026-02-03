@@ -1,9 +1,11 @@
 fastapi==0.115.0
 uvicorn[standard]==0.32.0
-torch==2.5.1
-transformers==4.47.1
-sae-lens==4.6.0
-numpy==1.26.4
+torch>=2.6.0
+transformers>=4.51.0
+sae-lens>=6.34.1
+numpy>=1.26.0
 pydantic==2.10.3
 pydantic-settings==2.6.1
 python-multipart==0.0.20
+requests==2.32.3
+scipy>=1.11.0

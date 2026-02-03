@@ -11,3 +11,51 @@ dist/
 models/
 data/cache/
 .DS_Store
+# Session logs (generated data)
+backend/session_logs/
+backend/cache/
+experiment_logs/
+
+# Validation results (generated)
+backend/validation_results.json
+backend/feature_*_annotation.json
+
+# Internal documentation (not for public demo)
+ARCHITECTURE.md
+DEVELOPMENT.md
+DOCKER.md
+GRANT_APPLICATION_GUIDE.md
+ORCHESTRATION_OVERVIEW.md
+QUICKSTART_DOCKER.md
+REVIEWER_README.md
+STATIC_EXPORT_QUICKSTART.md
+TASK*.md
+VERIFICATION_STATUS.md
+CONFABULATION_EXAMPLE_RAW.jsonl
+KEY_CONFABULATION_EXAMPLE.md
+FEATURE_ANNOTATIONS_QUICKSTART.md
+FINDINGS.md
+REPRODUCTION_GUIDE.md
+Makefile
+docker-compose*.yml
+test_docker_setup.sh
+
+# Backend internal docs (covered in main docs)
+backend/ANNOTATIONS.md
+backend/API.md
+backend/IMPLEMENTATION.md
+backend/QUICKSTART.md
+
+# Test/experimental files
+backend/test_*.py
+backend/test_*.sh
+backend/annotate*.py
+backend/feature_analyzer.py
+backend/feature_report.md
+backend/collect_data.py
+backend/explorer_service.py
+backend/tool_chat.py
+backend/injection_hooks.py
+
+# Scripts (internal)
+scripts/

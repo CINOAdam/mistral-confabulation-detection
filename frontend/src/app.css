@@ -1,0 +1,151 @@
+/* Global Tailwind imports */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for scientific presentation */
+@layer base {
+	body {
+		@apply font-sans;
+	}
+
+	h1 {
+		@apply text-4xl font-bold tracking-tight text-neutral-900;
+	}
+
+	h2 {
+		@apply text-3xl font-semibold tracking-tight text-neutral-800;
+	}
+
+	h3 {
+		@apply text-2xl font-semibold tracking-tight text-neutral-800;
+	}
+
+	h4 {
+		@apply text-xl font-medium tracking-tight text-neutral-700;
+	}
+
+	code {
+		@apply font-mono text-sm bg-neutral-100 px-1.5 py-0.5 rounded border border-neutral-200;
+	}
+
+	pre {
+		@apply font-mono text-sm bg-neutral-900 text-neutral-100 p-4 rounded-lg overflow-x-auto;
+	}
+
+	pre code {
+		@apply bg-transparent border-0 p-0;
+	}
+}
+
+@layer components {
+	/* Scientific card styling */
+	.card {
+		@apply bg-white rounded-lg shadow-sm border border-neutral-200 p-6;
+	}
+
+	.card-header {
+		@apply mb-4 pb-4 border-b border-neutral-200;
+	}
+
+	/* Data visualization containers */
+	.viz-container {
+		@apply bg-neutral-50 rounded-lg p-4 border border-neutral-200;
+	}
+
+	/* Activation heatmap styling */
+	.activation-heatmap {
+		@apply grid gap-1;
+	}
+
+	.activation-cell {
+		@apply rounded transition-colors duration-150;
+	}
+
+	/* Discovery highlight boxes */
+	.discovery-box {
+		@apply border-l-4 border-accent-500 bg-accent-50 p-4 rounded-r-lg;
+	}
+
+	/* Metric display */
+	.metric {
+		@apply text-center p-4 bg-neutral-50 rounded-lg border border-neutral-200;
+	}
+
+	.metric-value {
+		@apply text-3xl font-bold text-primary-600;
+	}
+
+	.metric-label {
+		@apply text-sm text-neutral-600 uppercase tracking-wide mt-1;
+	}
+
+	/* Chat message styling */
+	.message {
+		@apply p-4 rounded-lg mb-3;
+	}
+
+	.message-user {
+		@apply bg-primary-50 border border-primary-200;
+	}
+
+	.message-assistant {
+		@apply bg-neutral-100 border border-neutral-200;
+	}
+
+	.message-system {
+		@apply bg-accent-50 border border-accent-200 text-sm italic;
+	}
+
+	/* Button styles for scientific UI */
+	.btn {
+		@apply px-4 py-2 rounded-lg font-medium transition-colors duration-150 focus:outline-none focus:ring-2 focus:ring-offset-2;
+	}
+
+	.btn-primary {
+		@apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
+	}
+
+	.btn-secondary {
+		@apply bg-neutral-200 text-neutral-900 hover:bg-neutral-300 focus:ring-neutral-500;
+	}
+
+	.btn-accent {
+		@apply bg-accent-500 text-white hover:bg-accent-600 focus:ring-accent-500;
+	}
+
+	/* Loading states */
+	.loading-spinner {
+		@apply animate-spin h-5 w-5 border-2 border-neutral-300 border-t-primary-600 rounded-full;
+	}
+
+	/* Scenario selector */
+	.scenario-card {
+		@apply card cursor-pointer transition-all duration-150 hover:shadow-md hover:border-primary-300;
+	}
+
+	.scenario-card.active {
+		@apply border-primary-500 bg-primary-50;
+	}
+}
+
+@layer utilities {
+	/* Scientific typography */
+	.text-research {
+		@apply text-neutral-700 leading-relaxed;
+	}
+
+	.text-caption {
+		@apply text-sm text-neutral-600 italic;
+	}
+
+	/* Monospace for technical content */
+	.mono {
+		@apply font-mono;
+	}
+
+	/* Emphasis for discoveries */
+	.highlight-discovery {
+		@apply bg-accent-100 px-2 py-0.5 rounded font-medium text-accent-900;
+	}
+}
