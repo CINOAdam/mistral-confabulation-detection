@@ -249,9 +249,6 @@ mistral-reproducibility/
 
 ## Troubleshooting
 
-### Downloads taking too long
-
-**Solution**: Use \`huggingface-cli download\` to pre-download weights. See [DOWNLOAD_GUIDE.md](DOWNLOAD_GUIDE.md)
 
 ### CUDA out of memory
 
@@ -298,9 +295,6 @@ mistral-reproducibility/
 - 🗺️ [ROADMAP.md](ROADMAP.md) - Status & future research
 - ⚙️ [backend/.env.example](backend/.env.example) - Configuration options
 
-## Related Work
-
-**Deep research** (feature mapping, suppression, steering) happens in: [agent-deception-benchmark](https://github.com/YOUR_USERNAME/agent-deception-benchmark)
 
 This demo: **Reproducible detection** with ground truth validation
 
